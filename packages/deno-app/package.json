@@ -1,0 +1,11 @@
+{
+  "name": "deno-app",
+  "version": "1.0.0",
+  "main": "main.ts",
+  "author": "Rasmus Vermeulen <vermeulen.rasmus@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "deno run --config=tsconfig.json --importmap=importmap.json --allow-net src/main.ts",
+    "test": "deno test --allow-net --config=tsconfig.json --importmap=importmap.json tests/*.test.ts"
+  }
+}
