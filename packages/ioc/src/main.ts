@@ -1,3 +1,5 @@
+#! /usr/bin/env deno
+
 import "npm/reflect-metadata/Reflect.js";
 // import {} from "std/";
 // import {} from "x/";

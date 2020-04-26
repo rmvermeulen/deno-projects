@@ -1,5 +1,6 @@
 {
-  "name": "deno-app",
+  "name": "my-app",
+  "description": "A simple deno API",
   "version": "1.0.0",
   "main": "main.ts",
   "author": "Rasmus Vermeulen <vermeulen.rasmus@gmail.com>",

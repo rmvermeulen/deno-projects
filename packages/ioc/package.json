@@ -1,0 +1,12 @@
+{
+  "name": "ioc",
+  "description": "Simple Inversion-Of-Control system for deno",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Rasmus Vermeulen <vermeulen.rasmus@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "deno test --config tsconfig.json --importmap importmap.json src/*.test.ts",
+    "start": "deno run --config tsconfig.json --importmap importmap.json src/main.ts"
+  }
+}

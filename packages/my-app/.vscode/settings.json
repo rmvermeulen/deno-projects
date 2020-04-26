@@ -1,6 +1,6 @@
 {
     "deno.enable": true,
-    "deno.import_map": "importmap.json",
+    "deno.importmap": "importmap.json",
     "cSpell.words": [
         "alosaur",
         "importmap"
