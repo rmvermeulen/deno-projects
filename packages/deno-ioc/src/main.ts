@@ -1,31 +1,7 @@
+import "npm/reflect-metadata/Reflect.js";
 // import {} from "std/";
 // import {} from "x/";
-
-class Maybe<T> {
-  static ok<T>(value: T): Maybe<T> {
-    return new Maybe(value);
-  }
-
-  static none<T>(): Maybe<T> {
-    return new Maybe();
-  }
-
-  static map<T, R>(m: Maybe<T>, fn: (value: T) => R): Maybe<R> {
-    if (m.hasValue) {
-      return Maybe.ok(fn(m.value));
-    }
-    return Maybe.none();
-  }
-
-  private hasValue: boolean;
-  private constructor(private value: T = null) {
-    this.hasValue = value !== null;
-  }
-
-  public map<R>(fn: (value: T) => R): Maybe<R> {
-    return Maybe.map(this, fn);
-  }
-}
+import { Maybe } from "./maybe.ts";
 
 type Tag = string | { name: String };
 class Container {

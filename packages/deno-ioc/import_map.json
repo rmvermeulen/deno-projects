@@ -1,6 +1,8 @@
 {
     "imports": {
+        "@/": "./src/",
         "x/": "https://deno.land/x/",
-        "std/": "https://deno.land/std/"
+        "npm/": "https://unpkg.com/",
+        "std/": "https://deno.land/std@v0.41.0/"
     }
 }

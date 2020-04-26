@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Rasmus Vermeulen <vermeulen.rasmus@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "deno test --config tsconfig.json --importmap import_map.json src/*.test.ts",
+    "start": "deno run --config tsconfig.json --importmap import_map.json src/main.ts"
+  }
 }
