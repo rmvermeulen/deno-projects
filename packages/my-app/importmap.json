@@ -4,6 +4,7 @@
     "tests/": "./tests/",
     "alosaur/": "https://deno.land/x/alosaur/src/",
     "std/": "https://deno.land/std@v0.41.0/",
-    "x/": "https://deno.land/x/"
+    "x/": "https://deno.land/x/",
+    "npm/": "https://unpkg.com/"
   }
 }
