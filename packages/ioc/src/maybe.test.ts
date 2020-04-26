@@ -1,4 +1,4 @@
-import { expect } from "https://deno.land/x/expect/mod.ts";
+import { expect } from "x/expect/mod.ts";
 
 import { suite } from "./test_suite.ts";
 import { Maybe } from "./maybe.ts";
@@ -23,7 +23,7 @@ it("can call a function if it has a value", async () => {
   const shout = Maybe.some("some text").map((s) => s.toUpperCase());
   expect(shout.value()).toEqual("SOME TEXT");
 
-  const unmapped = Maybe.none().map((s) => s.toUpperCase());
+  const unmapped = Maybe.none().map((s: any) => s.toUpperCase());
   expect(unmapped.isNone()).toBe(true);
 });
 

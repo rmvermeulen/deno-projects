@@ -1,5 +1,6 @@
 {
     "imports": {
+        "x/expect/": "https://deno.land/x/expect@master/",
         "x/": "https://deno.land/x/",
         "npm/": "https://unpkg.com/",
         "std/": "https://deno.land/std@v0.41.0/"
