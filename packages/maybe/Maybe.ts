@@ -1,25 +1,25 @@
 export class Maybe<T> {
-  static some<T>(value: T): Maybe<T> {
+  static just<T>(value: T): Maybe<T> {
     return new Maybe(value);
   }
 
-  static none<T>(): Maybe<T> {
+  static nothing<T>(): Maybe<T> {
     return new Maybe(null as any as T);
   }
 
-  static isSome<T>(m: Maybe<T>): boolean {
-    return m.isSome();
+  static isJust<T>(m: Maybe<T>): boolean {
+    return m.isJust();
   }
 
-  static isNone<T>(m: Maybe<T>): boolean {
-    return m.isNone();
+  static isNothing<T>(m: Maybe<T>): boolean {
+    return m.isNothing();
   }
 
   static map<T, R>(m: Maybe<T>, fn: (value: T) => R): Maybe<R> {
     if (m._value !== null) {
-      return Maybe.some(fn(m._value));
+      return Maybe.just(fn(m._value));
     }
-    return Maybe.none();
+    return Maybe.nothing();
   }
 
   static map2<T1, T2, R>(
@@ -27,10 +27,10 @@ export class Maybe<T> {
     m2: Maybe<T2>,
     fn: (v1: T1, v2: T2) => R,
   ): Maybe<R> {
-    if (m1.isNone() || m2.isNone()) {
-      return Maybe.none();
+    if (m1.isNothing() || m2.isNothing()) {
+      return Maybe.nothing();
     }
-    return Maybe.some(fn(m1._value!, m2._value!));
+    return Maybe.just(fn(m1._value!, m2._value!));
   }
 
   private readonly _hasValue: boolean;
@@ -42,15 +42,15 @@ export class Maybe<T> {
 
   public value() {
     if (!this._hasValue) {
-      throw new Error("Maybe.none value accessed");
+      throw new Error("Maybe.nothing value accessed");
     }
     return this._value;
   }
 
-  public isSome(): boolean {
+  public isJust(): boolean {
     return this._hasValue;
   }
-  public isNone(): boolean {
+  public isNothing(): boolean {
     return !this._hasValue;
   }
 

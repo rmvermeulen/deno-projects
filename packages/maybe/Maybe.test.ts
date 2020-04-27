@@ -1,43 +1,30 @@
 import { expect } from "x/expect/mod.ts";
 
-import { suite } from "./test_suite.ts";
-import { Maybe } from "./maybe.ts";
+import { Maybe } from "./Maybe.ts";
 
-const it = suite("Maybe");
+Deno.test("Maybe", () => {
+  expect(Maybe.just(15).value()).toBe(15);
+  expect(() => Maybe.nothing().value()).toThrow();
 
-it("has a some constructor", async () => {
-  const m = Maybe.some(15);
-  expect(m.value()).toBe(15);
-});
-
-it("has a none constructor", async () => {
-  const m = Maybe.none();
-
-  expect(() => m.value()).toThrow();
-});
-
-it("can call a function if it has a value", async () => {
-  const doubled = Maybe.some(12).map((n) => n * 5);
+  const doubled = Maybe.just(12).map((n) => n * 5);
   expect(doubled.value()).toEqual(60);
 
-  const shout = Maybe.some("some text").map((s) => s.toUpperCase());
-  expect(shout.value()).toEqual("SOME TEXT");
+  const shout = Maybe.just("lorem ipsum").map((s) => s.toUpperCase());
+  expect(shout.value()).toEqual("LOREM IPSUM");
 
-  const unmapped = Maybe.none().map((s: any) => s.toUpperCase());
-  expect(unmapped.isNone()).toBe(true);
-});
+  const unmapped = Maybe.nothing().map((s: any) => s.toUpperCase());
+  expect(unmapped.isNothing()).toBe(true);
 
-it("can call a 2-arity function with the values of 2 Maybe's", async () => {
-  const some5 = Maybe.some(5);
-  const none = Maybe.none<number>();
+  const just5 = Maybe.just(5);
+  const nothing = Maybe.nothing<number>();
   const sum = (a: any, b: any) => a + b;
 
   for (
     const [a, b, fn] of [
-      [none, none, Maybe.isNone],
-      [none, some5, Maybe.isNone],
-      [some5, none, Maybe.isNone],
-      [some5, some5, Maybe.isSome],
+      [nothing, nothing, Maybe.isNothing],
+      [nothing, just5, Maybe.isNothing],
+      [just5, nothing, Maybe.isNothing],
+      [just5, just5, Maybe.isJust],
     ] as any
   ) {
     var v = Maybe.map2(a, b, sum);
