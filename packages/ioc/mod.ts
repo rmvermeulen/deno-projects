@@ -15,8 +15,6 @@ assert(typeof Reflect['getMetadata'] === 'function', "Reflect::getMetadata missi
 assert(typeof Reflect['defineMetadata'] === 'function', "Reflect::defineMetadata missing")
 
 
-import { Maybe } from "./src/maybe.ts";
-
+export { Application } from './src/Application.ts'
 export * as Decorators from './src/decorators.ts'
 
-export { Application } from './src/Application.ts'
