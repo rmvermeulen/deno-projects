@@ -1,4 +1,6 @@
-import { it } from "x/expect/mod.ts";
+import { it, expect } from "x/expect/mod.ts";
+
+export { expect }
 
 export const suite = (suiteName: string) =>
   (testName: string, testFN: () => void | Promise<void>) =>

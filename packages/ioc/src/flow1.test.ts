@@ -1,6 +1,4 @@
-import { expect } from 'x/expect/mod.ts'
-
-import { suite } from './test_suite.ts'
+import { expect, suite } from './test_suite.ts'
 import { Container } from './container.ts'
 
 const it = suite("Flow1")

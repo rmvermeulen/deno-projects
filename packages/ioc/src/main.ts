@@ -1,26 +1,11 @@
 #! /usr/bin/env deno
 
-import "npm/reflect-metadata/Reflect.js";
-// import {} from "std/";
-// import {} from "x/";
 import { Maybe } from "./maybe.ts";
 
-type Tag = string | { name: String };
-class Container {
-  public resolve<T>(tag: Tag): Maybe<T> {
-    return Maybe.none();
-  }
-  public register<T>(tag: Tag, value: T): void {}
-}
+import * as Decorators from './decorators.ts'
 
-class App {
-  private container: Container;
-  constructor() {
-    this.container = new Container();
-  }
-  start(): void {}
-}
+import { Application } from './Application.ts'
 
-const app = new App();
+const app = new Application();
 
 app.start();
