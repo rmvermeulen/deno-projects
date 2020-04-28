@@ -1,3 +1,6 @@
 {
-    "git.ignoreLimitWarning": true
+    "cSpell.words": [
+        "paramtypes"
+    ],
+    "typescript.tsdk": "./node_modules/typescript/lib"
 }

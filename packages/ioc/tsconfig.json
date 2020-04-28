@@ -2,6 +2,10 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "ES6"
-  }
+    "plugins": [
+      {
+        "name": "deno_ls_plugin"
+      }
+    ],
+  },
 }

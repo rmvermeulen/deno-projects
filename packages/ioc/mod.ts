@@ -1,7 +1,8 @@
 #! /usr/bin/env deno
+
+// @ts-ignore
 import { assert } from "std/testing/asserts.ts";
 
-import "reflect-metadata";
 
 declare const Reflect: {
   metadata(): void;
@@ -19,5 +20,6 @@ assert(
   "Reflect::defineMetadata missing",
 );
 
+// @ts-ignore
 export { Application } from "./src/Application.ts";
 export * as Decorators from "./src/decorators.ts";
