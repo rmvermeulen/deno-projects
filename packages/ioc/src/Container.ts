@@ -1,7 +1,22 @@
 import { assert } from "std/testing/asserts.ts";
 import maybe, { Maybe } from "x/denofun/maybe.ts";
+import map from "x/denofun/map.ts";
+import curry from "x/denofun/curry.ts";
+import { IOC_CONFIG, TypeMetadataKey } from "./Injectable.ts";
 
+// @ts-ignore
 declare const Reflect: typeof import("./Reflect.d.ts");
+
+type MetaGetter = (target: Object, key?: string) => Maybe<Function>;
+
+const metaGetter = (design: TypeMetadataKey) =>
+  (target: Object, key?: string): Maybe<Function> =>
+    maybe(Reflect.getMetadata(design, target, key));
+
+const getConfig: MetaGetter = metaGetter(IOC_CONFIG);
+const getType: MetaGetter = metaGetter("design:type");
+const getParamTypes: MetaGetter = metaGetter("design:paramtypes");
+const getReturnType: MetaGetter = metaGetter("design:returntype");
 
 type OverrideConfig<T> = {
   useClass: Function;
@@ -16,7 +31,15 @@ export class Container {
   private mapping = new Map<any, any>();
   private overrides = new Map<any, () => any>();
 
+  constructor() {
+    this.cache.set(Container, this);
+  }
+
   public register(_class: Function): void {
+    assert(
+      getConfig(_class).get() instanceof Object,
+      `Cannot register non-injectable class: '${_class.name}'`,
+    );
     if (this.mapping.has(_class)) {
       throw new Error("Duplicate registered");
     }
@@ -27,29 +50,29 @@ export class Container {
       return maybe(this.cache.get(tag));
     }
     if (this.overrides.has(tag)) {
-      const getValue: () => T = this.overrides.get(tag)!;
-      const value = getValue();
-      this.cache.set(tag, value);
-      return maybe(value);
+      const getComponent: () => T = this.overrides.get(tag)!;
+      const component = getComponent();
+      this.cache.set(tag, component);
+      return maybe(component);
     }
     return maybe(this.mapping.get(tag)).map((_class) => {
-      let value;
-      const deps: any[] = Reflect.getMetadata("design:paramtypes", _class) ||
-        [];
-      const args = deps.map((dep) => {
-        const arg = this.resolve(dep).get();
-        assert(arg, "Unresolved dependency");
-        return arg;
-      });
-      value = new _class(...args);
-      console.log("deps  ", { deps, args });
+      const params: Maybe<any[]> = getParamTypes(_class).map(
+        curry(map)((dep: Function) => {
+          const arg = this.resolve(dep).get();
+          assert(arg, `Unresolved dependency (${dep} of ${_class})`);
+          return arg;
+        }),
+      );
+      const component = Reflect.construct(_class, params.default([]));
 
-      if (!value) {
-        value = new _class();
+      const setter = curry(Reflect.set)(component);
+      for (const key of Reflect.ownKeys(component)) {
+        getType(component, key).flatMap((tag) => this.resolve(tag))
+          .map(setter(key));
       }
-      this.cache.set(tag, value);
-      console.log("info  ", { tag, _class, value });
-      return value;
+
+      this.cache.set(tag, component);
+      return component;
     });
   }
 

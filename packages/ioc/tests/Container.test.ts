@@ -1,25 +1,36 @@
 import { expect } from "x/expect/mod.ts";
-import { Container } from "../src/Container.ts";
+import { Container, Injectable } from "../mod.ts";
 
 declare const Reflect: typeof import("../src/Reflect.d.ts");
+Deno.test("Container: simple resolve", () => {
+  @Injectable()
+  class Example {
+    constructor() {}
+  }
 
-Deno.test("Override", () => {
+  const container = new Container();
+  container.register(Example);
+  expect(container.resolve(Example).get()).toBeInstanceOf(Example);
+});
+
+Deno.test("Container: simple override", () => {
+  @Injectable()
   class Example {}
+
   const container = new Container();
   container.register(Example);
   container.override(Example, { useValue: 5 });
   expect(container.resolve(Example).get()).toBe(5);
 });
 
-Deno.test("Dependencies", () => {
+Deno.test("Container: nested resolve", () => {
+  @Injectable()
   class A {}
 
-  @Reflect.metadata("inject", true)
+  @Injectable()
   class B {
     constructor(public a: A) {}
   }
-
-  console.log({ ref: Reflect.getMetadata("design:types", B) });
 
   const container = new Container();
 
@@ -28,7 +39,7 @@ Deno.test("Dependencies", () => {
   expect(() => container.resolve(B).get()).toThrow();
 
   container.register(A);
-  // now it works
+  // // now it works
   const b: B = container.resolve<B>(B).get()!;
 
   expect(b).not.toBeUndefined();
@@ -38,19 +49,20 @@ Deno.test("Dependencies", () => {
   expect(b!.a).toBeInstanceOf(A);
 });
 
-Deno.test("Override Dependencies", () => {
+Deno.test("Container: nested override", () => {
+  @Injectable()
   class A {}
 
-  @Reflect.metadata("inject", true)
+  @Injectable()
   class B {
     constructor(public a: A) {}
   }
-  @Reflect.metadata("inject", true)
+  @Injectable()
   class C {
     constructor(public b: B) {}
   }
 
-  console.log({ ref: Reflect.getMetadata("design:types", B) });
+  // console.log({ ref: Reflect.getMetadata("design:types", B) });
 
   const container = new Container();
 
