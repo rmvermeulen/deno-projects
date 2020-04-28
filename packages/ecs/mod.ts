@@ -1,1 +1,1 @@
-export { Entity } from './src/Entity.ts'
+export { Entity } from "./src/Entity.ts";

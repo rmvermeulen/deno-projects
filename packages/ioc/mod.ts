@@ -3,7 +3,6 @@
 // @ts-ignore
 import { assert } from "std/testing/asserts.ts";
 
-
 declare const Reflect: {
   metadata(): void;
   defineMetadata(): void;
