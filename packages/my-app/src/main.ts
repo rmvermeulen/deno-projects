@@ -1,9 +1,44 @@
-#! /usr/bin/env deno
-import { App } from "x/alosaur/src/mod.ts";
+import { Container, Injectable } from "@ioc/mod.ts";
 
-import { HomeArea } from "./home.area.ts";
+@Injectable({ shared: false })
+class Human {
+  static count: number = 0;
+  name: string;
+  constructor() {
+    this.name = [
+      "Alice",
+      "Bob",
+      "Candace",
+      "Dave",
+      "Ellie",
+    ][Math.floor(Math.random() * 5)];
+    this.name += Human.count;
+    Human.count += 1;
+  }
+}
+@Injectable()
+class CEO {
+  constructor(public human: Human) {}
+}
 
-// Create alosaur application
-const app = new App({ areas: [HomeArea] });
+@Injectable()
+class WorkForce {
+  constructor(public human: Human) {}
+}
 
-app.listen();
+@Injectable()
+class Company {
+  constructor(public ceo: CEO, public workforce: WorkForce) {}
+}
+
+const container = new Container();
+container.register(Human);
+container.register(CEO);
+container.register(WorkForce);
+container.register(Company);
+
+console.log("company", JSON.stringify(
+  container.resolve(Company),
+  null,
+  2,
+));
