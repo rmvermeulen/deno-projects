@@ -1,4 +1,4 @@
-import { Container } from "./container.ts";
+import { Container } from "./Container.ts";
 
 export class Application {
   private container = new Container();
