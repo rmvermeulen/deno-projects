@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "packages/my-app"
+		},
+		{
+			"path": "packages/ioc"
+		},
+		{
+			"path": "packages/ecs"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"paramtypes",
+			"returntype"
+		]
+	}
+}
