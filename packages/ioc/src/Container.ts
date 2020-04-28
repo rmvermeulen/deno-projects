@@ -2,18 +2,20 @@ import { assert } from "std/testing/asserts.ts";
 import maybe, { Maybe } from "x/denofun/maybe.ts";
 import map from "x/denofun/map.ts";
 import curry from "x/denofun/curry.ts";
-import { IOC_CONFIG, TypeMetadataKey } from "./Injectable.ts";
+import { IOC_CONFIG, TypeMetadataKey, InjectableConfig } from "./Injectable.ts";
 
 // @ts-ignore
 declare const Reflect: typeof import("./Reflect.d.ts");
 
 type MetaGetter = (target: Object, key?: string) => Maybe<Function>;
 
-const metaGetter = (design: TypeMetadataKey) =>
-  (target: Object, key?: string): Maybe<Function> =>
+const metaGetter = <T = Function>(design: TypeMetadataKey) =>
+  (target: Object, key?: string): Maybe<T> =>
     maybe(Reflect.getMetadata(design, target, key));
 
-const getConfig: MetaGetter = metaGetter(IOC_CONFIG);
+const getConfig: (target: any) => Maybe<InjectableConfig> = metaGetter(
+  IOC_CONFIG,
+);
 const getType: MetaGetter = metaGetter("design:type");
 const getParamTypes: MetaGetter = metaGetter("design:paramtypes");
 const getReturnType: MetaGetter = metaGetter("design:returntype");
@@ -46,7 +48,9 @@ export class Container {
     this.mapping.set(_class, _class);
   }
   public resolve<T>(tag: any): Maybe<T> {
-    if (this.cache.has(tag)) {
+    const config: InjectableConfig = getConfig(tag).default({ shared: true });
+
+    if (config.shared && this.cache.has(tag)) {
       return maybe(this.cache.get(tag));
     }
     if (this.overrides.has(tag)) {
@@ -70,8 +74,9 @@ export class Container {
         getType(component, key).flatMap((tag) => this.resolve(tag))
           .map(setter(key));
       }
-
-      this.cache.set(tag, component);
+      if (config.shared) {
+        this.cache.set(tag, component);
+      }
       return component;
     });
   }
