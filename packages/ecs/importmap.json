@@ -4,7 +4,7 @@
         "x/": "https://deno.land/x/",
         "npm/reflect-metadata/": "https://unpkg.com/reflect-metadata@0.1.13/",
         "npm/": "https://unpkg.com/",
-        "std/": "https://deno.land/std@v0.41.0/",
+        "std/": "https://deno.land/std/",
         "@ioc/": "../ioc/"
     }
 }
