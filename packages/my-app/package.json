@@ -6,7 +6,7 @@
   "author": "Rasmus Vermeulen <vermeulen.rasmus@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "deno run --config=tsconfig.json --importmap=importmap.json --allow-net src/main.ts",
-    "test": "deno test --allow-net --config=tsconfig.json --importmap=importmap.json tests/*.test.ts"
+    "start": "deno run --config=tsconfig.json --unstable --importmap=importmap.json --allow-net src/main.ts",
+    "test": "deno test --allow-net --config=tsconfig.json --unstable --importmap=importmap.json tests/*.test.ts"
   }
 }
