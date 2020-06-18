@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "plugins": [
+      {
+        "name": "deno_ls_plugin"
+      }
+    ],
+  },
+}
